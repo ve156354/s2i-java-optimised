@@ -3,6 +3,7 @@ FROM rhel:7.3
 ENV MAVEN_VERSION="3.3.3" \
     #JOLOKIA_VERSION="1.3.5" \
     JAVA_HOME="/usr/lib/jvm/java-1.8.131" \
+    JAVA_HOME="/usr/java/jdk1.8.0_131" \
     JAVA_VENDOR="openjdk" \
     JAVA_VERSION="1.8.0" \
     PATH=$PATH:"/usr/local/s2i" \
