@@ -30,7 +30,7 @@ RUN yum repolist > /dev/null && \
     wget \
     which \
     yum-utils \
-    rsync && \
+    rsync \
     java-1.8.0-openjdk-devel" && \
     yum install -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
