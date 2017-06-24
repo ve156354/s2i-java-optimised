@@ -1,5 +1,7 @@
 FROM rhel:7.3
 
+MAINTAINER Veerendra K Akula <vakula@atpco.net>
+
 ENV MAVEN_VERSION="3.3.3" \    
     JAVA_HOME="/usr/java/jdk1.8.0_131" \
     JAVA_VENDOR="oracle" \
@@ -17,7 +19,7 @@ LABEL io.k8s.description="Platform for building and running plain Java applicati
       org.jboss.deployments-dir="/deployments"
 
 
-# Need to install Yum Base Packages, and Java
+# Need to install Yum Base Packages, and Java, Maven
 RUN yum repolist > /dev/null && \
     yum-config-manager --enable rhel-7-server-optional-rpms && \
     yum clean all && \
