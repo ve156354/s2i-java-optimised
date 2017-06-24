@@ -1,14 +1,10 @@
 FROM rhel:7.3
 
-ENV MAVEN_VERSION="3.3.3" \
-    #JOLOKIA_VERSION="1.3.5" \
-    #JAVA_HOME="/usr/lib/jvm/java-1.8.0" \
+ENV MAVEN_VERSION="3.3.3" \    
     JAVA_HOME="/usr/java/jdk1.8.0_131" \
     JAVA_VENDOR="oracle" \
     JAVA_VERSION="1.8.0" \
-    PATH=$PATH:"/usr/local/s2i" \
-    #AB_JOLOKIA_AUTH_OPENSHIFT="true" \
-    #AB_JOLOKIA_PASSWORD_RANDOM="true" \
+    PATH=$PATH:"/usr/local/s2i" \   
     JAVA_DATA_DIR=/deployments/data
 
 # Some version information
@@ -29,9 +25,7 @@ RUN yum repolist > /dev/null && \
     unzip \
     wget \
     which \
-    yum-utils \
-    rsync" && \
-    #java-1.8.0-openjdk-devel" && \
+    rsync" && \   
     yum install -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all && \
@@ -54,25 +48,10 @@ RUN yum repolist > /dev/null && \
     tar -xzf - -C /opt && \
     ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven && \
     ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
-    
-    # Install Jolokia
-    #mkdir -p /opt/jolokia && \
-    #curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar \
-    #     -o /opt/jolokia/jolokia.jar && \
          
     echo securerandom.source=file:/dev/urandom >> /usr/java/jdk1.8.0_131/jre/lib/security/java.security
 
-
-#ADD jolokia-opts /opt/jolokia/jolokia-opts
-#ADD jolokia.properties /opt/jolokia/etc/jolokia.properties
-
-#RUN mkdir -p /opt/jolokia/etc && \
-#    chmod 444 /opt/jolokia/jolokia.jar && \
-#    chmod 755 /opt/jolokia/jolokia-opts && \
-#    chmod -R 775 /opt/jolokia/etc && \
-#    chgrp -R root /opt/jolokia/etc && \
-#    chown java:root /opt/jolokia/etc/jolokia.properties
-
+	
 COPY run-java.sh run-env.sh debug-options container-limits java-default-options /opt/run-java/
 RUN chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/java-default-options /opt/run-java/container-limits /opt/run-java/debug-options
 
