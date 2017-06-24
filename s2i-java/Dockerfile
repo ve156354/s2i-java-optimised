@@ -17,7 +17,7 @@ LABEL io.k8s.description="Platform for building and running plain Java applicati
       io.openshift.tags="builder,java" \
       io.openshift.s2i.scripts-url="image:///usr/local/s2i" \
       io.openshift.s2i.destination="/tmp" \
-      io.openshift.expose-services="8080" \
+      io.openshift.expose-services="8080,8778" \
       org.jboss.deployments-dir="/deployments"
 
 
@@ -57,10 +57,9 @@ RUN yum repolist > /dev/null && \
     
     # Install Jolokia
     mkdir -p /opt/jolokia && \
-    curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar \
-        -o /opt/jolokia/jolokia.jar  \
+    curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar -o /opt/jolokia/jolokia.jar  && \
          
-    #echo securerandom.source=file:/dev/urandom >> /usr/java/jdk1.8.0_131/java/jre/lib/security/java.security
+    echo securerandom.source=file:/dev/urandom >> /usr/java/jdk1.8.0_131/java/jre/lib/security/java.security
 
 
 ADD jolokia-opts /opt/jolokia/jolokia-opts
