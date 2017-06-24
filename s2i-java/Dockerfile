@@ -33,7 +33,7 @@ RUN yum repolist > /dev/null && \
     yum clean all && \
 	
     # Install Java
-    wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm" 
+    wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm" \
 	      -O /tmp/jdk-8-linux-x64.rpm  && \
     yum -y --setopt=tsflags=nodocs install /tmp/jdk-8-linux-x64.rpm  && \
     yum clean all  && \
