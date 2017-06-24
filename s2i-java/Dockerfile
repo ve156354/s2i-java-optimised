@@ -2,8 +2,8 @@ FROM rhel:7.3
 
 ENV MAVEN_VERSION="3.3.3" \
     JOLOKIA_VERSION="1.3.5" \
-    #JAVA_HOME="/usr/lib/jvm/java-1.8.131" \
-    JAVA_HOME="/usr/java/jdk1.8.0_131" \
+    JAVA_HOME="/usr/lib/jvm/java-1.8.131" \
+    #JAVA_HOME="/usr/java/jdk1.8.0_131" \
     JAVA_VENDOR="openjdk" \
     JAVA_VERSION="1.8.0" \
     PATH=$PATH:"/usr/local/s2i" \
@@ -31,17 +31,17 @@ RUN yum repolist > /dev/null && \
     which \
     yum-utils \
     rsync" && \
-    #java-1.8.0-openjdk-devel" && \
+    java-1.8.0-openjdk-devel" && \
     yum install -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all && \
 	
 	  
 	# Install Java
-	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm" -O /tmp/jdk-8-linux-x64.rpm  && \
-    yum -y --setopt=tsflags=nodocs install /tmp/jdk-8-linux-x64.rpm  && \
-    yum clean all  && \
-    rm  /tmp/jdk-8-linux-x64.rpm && \
+	#wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm" -O /tmp/jdk-8-linux-x64.rpm  && \
+    #yum -y --setopt=tsflags=nodocs install /tmp/jdk-8-linux-x64.rpm  && \
+    #yum clean all  && \
+    #rm  /tmp/jdk-8-linux-x64.rpm && \
 		
 	
     # Add Java User
@@ -57,9 +57,10 @@ RUN yum repolist > /dev/null && \
     
     # Install Jolokia
     mkdir -p /opt/jolokia && \
-    curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar -o /opt/jolokia/jolokia.jar 
+    curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar \
+         -o /opt/jolokia/jolokia.jar && \
          
-    #echo securerandom.source=file:/dev/urandom >> /usr/java/jdk1.8.0_131/java/jre/lib/security/java.security
+    echo securerandom.source=file:/dev/urandom >> /usr/lib/jvm/java/jre/lib/security/java.security
 
 
 ADD jolokia-opts /opt/jolokia/jolokia-opts
