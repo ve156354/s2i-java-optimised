@@ -1,0 +1,67 @@
+{
+	"kind": "List",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "s2i-java-optimised:1.0",
+         "description": "Builder image to build java  applications using maven"
+	},
+	"items": [{
+			"kind": "BuildConfig",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "s2i-java-optimised"
+			},
+			"spec": {
+				"triggers": [{
+					"type": "ImageChange",
+					"imageChange": {}
+				}],
+				"source": {
+					"type": "Git",
+					"git": {
+						"uri": "https://github.com/ve156354/s2i-java-optimised.git",
+						"ref": "master"
+					},
+					"contextDir": "s2i-java"
+				},
+				"strategy": {
+					"type": "Docker",
+					"dockerStrategy": {
+						"noCache": true,
+						"from": {
+							"kind": "DockerImage",
+							"name": "rhel7.3"
+						}
+					}
+				},
+				"output": {
+					"to": {
+						"kind": "ImageStreamTag",
+						"name": "s2i-java-optimised:1.0"
+					}
+				},
+				"resources": {}
+			}
+		},{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "s2i-java-optimised"
+			},
+			"spec": {
+				"dockerImageRepository": "",
+				"tags": [{
+					"name": "1.0",
+					"annotations": {
+						"description": "Java builder image",
+						"iconClass": "icon-tomcat",
+						"tags": "builder,java,maven",
+						"supports": "java:8,maven:3",
+						"version": "1.0"
+					}
+				}]
+			}
+		}
+
+	]
+}
