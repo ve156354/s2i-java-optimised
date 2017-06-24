@@ -10,7 +10,7 @@ source `dirname "$0"`/s2i-setup
 JAVA_OPTIONS="${JAVA_OPTIONS:+${JAVA_OPTIONS} }"
 
 # Temporary options variable until the harmonization hawt-app PR #5 has been applied (hopefully)
-JVM_ARGS="${JVM_ARGS:+${JVM_ARGS} }${JAVA_OPTIONS}"
+JVM_ARGS="${JVM_ARGS:+${JVM_ARGS} }${JAVA_OPTIONS}$(/opt/jolokia/jolokia-opts)"
 export JAVA_OPTIONS JVM_ARGS
 
 if [ -f "${DEPLOYMENTS_DIR}/bin/run.sh" ]; then
