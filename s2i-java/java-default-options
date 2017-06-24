@@ -70,5 +70,20 @@ cpu_core_tunning() {
   fi
 }
 
+gc_config() {                                                                                                                                                                                                                                        
+  local minHeapFreeRatio=${GC_MIN_HEAP_FREE_RATIO:-20}                                                                                                                                                                                               
+  local maxHeapFreeRatio=${GC_MAX_HEAP_FREE_RATIO:-40}                                                                                                                                                                                               
+  local timeRatio=${GC_TIME_RATIO:-4}                                                                                                                                                                                                                
+  local adaptiveSizePolicyWeight=${GC_ADAPTIVE_SIZE_POLICY_WEIGHT:-90}                                                                                                                                                                               
+  local maxMetaspaceSize=${GC_MAX_METASPACE_SIZE:-100}                                                                                                                                                                                               
+                                                                                                                                                                                                                                                     
+  echo "-XX:+UseParallelGC " \                                                                                                                                                                                                                       
+       "-XX:MinHeapFreeRatio=${minHeapFreeRatio} "\                                                                                                                                                                                                  
+       "-XX:MaxHeapFreeRatio=${maxHeapFreeRatio} "\                                                                                                                                                                                                  
+       "-XX:GCTimeRatio=${timeRatio} "\                                                                                                                                                                                                              
+       "-XX:AdaptiveSizePolicyWeight=${adaptiveSizePolicyWeight} "\                                                                                                                                                                                  
+       "-XX:MaxMetaspaceSize=${maxMetaspaceSize}m"                                                                                                                                                                                                   
+}      
+
 # Echo options, trimming trailing and multiple spaces
-echo "$(max_memory) $(diagnostics) $(cpu_core_tunning)" | awk '$1=$1'
+echo "$(max_memory) $(gc_config) $(diagnostics) $(cpu_core_tunning)" | awk '$1=$1'
