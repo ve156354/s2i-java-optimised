@@ -1,14 +1,14 @@
 FROM rhel:7.3
 
 ENV MAVEN_VERSION="3.3.3" \
-    JOLOKIA_VERSION="1.3.5" \
-    JAVA_HOME="/usr/lib/jvm/java-1.8.0" \
-    #JAVA_HOME="/usr/java/jdk1.8.0_131" \
-    JAVA_VENDOR="openjdk" \
+    #JOLOKIA_VERSION="1.3.5" \
+    #JAVA_HOME="/usr/lib/jvm/java-1.8.0" \
+    JAVA_HOME="/usr/java/jdk1.8.0_131" \
+    JAVA_VENDOR="oracle" \
     JAVA_VERSION="1.8.0" \
     PATH=$PATH:"/usr/local/s2i" \
-    AB_JOLOKIA_AUTH_OPENSHIFT="true" \
-    AB_JOLOKIA_PASSWORD_RANDOM="true" \
+    #AB_JOLOKIA_AUTH_OPENSHIFT="true" \
+    #AB_JOLOKIA_PASSWORD_RANDOM="true" \
     JAVA_DATA_DIR=/deployments/data
 
 # Some version information
@@ -17,7 +17,7 @@ LABEL io.k8s.description="Platform for building and running plain Java applicati
       io.openshift.tags="builder,java" \
       io.openshift.s2i.scripts-url="image:///usr/local/s2i" \
       io.openshift.s2i.destination="/tmp" \
-      io.openshift.expose-services="8080,8778" \
+      io.openshift.expose-services="8080" \
       org.jboss.deployments-dir="/deployments"
 
 
@@ -30,18 +30,18 @@ RUN yum repolist > /dev/null && \
     wget \
     which \
     yum-utils \
-    rsync \
-    java-1.8.0-openjdk-devel" && \
+    rsync" && \
+    #java-1.8.0-openjdk-devel" && \
     yum install -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all && \
 	
 	  
 	# Install Java
-	#wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm" -O /tmp/jdk-8-linux-x64.rpm  && \
-    #yum -y --setopt=tsflags=nodocs install /tmp/jdk-8-linux-x64.rpm  && \
-    #yum clean all  && \
-    #rm  /tmp/jdk-8-linux-x64.rpm && \
+	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm" -O /tmp/jdk-8-linux-x64.rpm  && \
+    yum -y --setopt=tsflags=nodocs install /tmp/jdk-8-linux-x64.rpm  && \
+    yum clean all  && \
+    rm  /tmp/jdk-8-linux-x64.rpm && \
 		
 	
     # Add Java User
@@ -56,28 +56,28 @@ RUN yum repolist > /dev/null && \
     ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
     
     # Install Jolokia
-    mkdir -p /opt/jolokia && \
-    curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar \
-         -o /opt/jolokia/jolokia.jar && \
+    #mkdir -p /opt/jolokia && \
+    #curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar \
+    #     -o /opt/jolokia/jolokia.jar && \
          
-    echo securerandom.source=file:/dev/urandom >> /usr/lib/jvm/java/jre/lib/security/java.security
+    echo securerandom.source=file:/dev/urandom >> /usr/java/jdk1.8.0_131/jre/lib/security/java.security
 
 
-ADD jolokia-opts /opt/jolokia/jolokia-opts
-ADD jolokia.properties /opt/jolokia/etc/jolokia.properties
+#ADD jolokia-opts /opt/jolokia/jolokia-opts
+#ADD jolokia.properties /opt/jolokia/etc/jolokia.properties
 
-RUN mkdir -p /opt/jolokia/etc && \
-    chmod 444 /opt/jolokia/jolokia.jar && \
-    chmod 755 /opt/jolokia/jolokia-opts && \
-    chmod -R 775 /opt/jolokia/etc && \
-    chgrp -R root /opt/jolokia/etc && \
-    chown java:root /opt/jolokia/etc/jolokia.properties
+#RUN mkdir -p /opt/jolokia/etc && \
+#    chmod 444 /opt/jolokia/jolokia.jar && \
+#    chmod 755 /opt/jolokia/jolokia-opts && \
+#    chmod -R 775 /opt/jolokia/etc && \
+#    chgrp -R root /opt/jolokia/etc && \
+#    chown java:root /opt/jolokia/etc/jolokia.properties
 
 COPY run-java.sh run-env.sh debug-options container-limits java-default-options /opt/run-java/
 RUN chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/java-default-options /opt/run-java/container-limits /opt/run-java/debug-options
 
 # Expose Ports
-EXPOSE 8080 8778
+EXPOSE 8080
 
 # S2I scripts + README
 COPY s2i /usr/local/s2i
