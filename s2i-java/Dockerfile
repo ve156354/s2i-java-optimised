@@ -58,9 +58,9 @@ RUN yum repolist > /dev/null && \
     # Install Jolokia
     mkdir -p /opt/jolokia && \
     curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar \
-        -o /opt/jolokia/jolokia.jar && \
+        -o /opt/jolokia/jolokia.jar  \
          
-    echo securerandom.source=file:/dev/urandom >> /usr/java/jdk1.8.0_131/java/jre/lib/security/java.security
+    #echo securerandom.source=file:/dev/urandom >> /usr/java/jdk1.8.0_131/java/jre/lib/security/java.security
 
 
 ADD jolokia-opts /opt/jolokia/jolokia-opts
