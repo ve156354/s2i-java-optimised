@@ -79,14 +79,15 @@ function setup_maven() {
     maven_env_args="${maven_env_args} -s ${S2I_SOURCE_DIR}/configuration/settings.xml"
     echo "Using custom maven settings from ${S2I_SOURCE_DIR}/configuration/settings.xml"
   else
-    local settings="${S2I_ARTIFACTS_DIR}/configuration/settings.xml"
+    //local settings="${S2I_ARTIFACTS_DIR}/configuration/settings.xml"
+	local settings="/opt/java/.m2/settings.xml"
     mkdir -p $(dirname "${settings}")
     maven_env_args="${maven_env_args} -s ${settings}"
     echo "Initialising default settings ${settings}"
-    cp "${SCRIPT_DIR}/jboss-settings.xml" "${settings}"
+    //cp "${SCRIPT_DIR}/jboss-settings.xml" "${settings}"
 
-    configure_proxy "${settings}"
-    configure_mirrors "${settings}"
+    //configure_proxy "${settings}"
+    //configure_mirrors "${settings}"
   fi
 }
 
