@@ -70,7 +70,7 @@ function copy_artifacts() {
         fi
     fi
     echo "Running: cp ${cp_args} ${dest}"
-    cp ${cp_args} ${dest}/app.jar
+    cp ${cp_args} ${dest}
 }
 
 
