@@ -113,7 +113,7 @@ function build_maven() {
     echo "Setting MAVEN_OPTS to ${MAVEN_OPTS}"
   fi
   # Default args: no tests, if a module is specified, only build this module
-  local maven_args=${MAVEN_ARGS:--e -Popenshift -DskipTests -Dcom.redhat.xpaas.repo.redhatga }
+  local maven_args=${MAVEN_ARGS:--e -Popenshift -DskipTests -Dcom.redhat.xpaas.repo.redhatga package}
   #USE the java default jvm options for builds  -- end
   
   
