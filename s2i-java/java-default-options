@@ -77,7 +77,7 @@ gc_config() {
   local maxMetaspaceSize=${GC_MAX_METASPACE_SIZE:-100}  
   
                                                                                                                                                                                                                                                      
-  echo "-XX:+USEG1GC "\
+  echo "-XX:+UseG1GC "\
        "-XX:MinHeapFreeRatio=${minHeapFreeRatio} "\
        "-XX:MaxHeapFreeRatio=${maxHeapFreeRatio} "\
        "-XX:GCTimeRatio=${timeRatio} "\
