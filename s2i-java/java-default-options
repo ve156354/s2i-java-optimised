@@ -75,9 +75,10 @@ gc_config() {
   local timeRatio=${GC_TIME_RATIO:-4}                                                                                                                                                                                                                
   local adaptiveSizePolicyWeight=${GC_ADAPTIVE_SIZE_POLICY_WEIGHT:-90}                                                                                                                                                                               
   local maxMetaspaceSize=${GC_MAX_METASPACE_SIZE:-100}  
+  local gc=${WHICH_GC:-UseG1GC}
   
                                                                                                                                                                                                                                                      
-  echo "-XX:+UseG1GC "\
+  echo "-XX:+${gc} "\
        "-XX:MinHeapFreeRatio=${minHeapFreeRatio} "\
        "-XX:MaxHeapFreeRatio=${maxHeapFreeRatio} "\
        "-XX:GCTimeRatio=${timeRatio} "\
