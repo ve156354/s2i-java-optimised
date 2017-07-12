@@ -152,7 +152,31 @@ function build_maven() {
 
 echo "=================================================================="
 echo "Starting S2I Java Build ....."
-if [ -f "${S2I_SOURCE_DIR}/pom.xml" ]; then
+
+
+
+if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION" ] ; then
+  
+  echo "Performing Binary build with maven artifact from NEXUS ....$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION"
+  
+  BUILDER_ARGS="org.apache.maven.plugins:maven-dependency-plugin:2.1:get -Dmaven.repo.local=$M2_REPO -DrepoUrl=http://artmgt01.atpco.org:8081/repository/maven-releases -Dartifact=$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION:jar "
+  #Execute the actual build
+  echo "Running - mvn ${maven_env_args} $BUILDER_ARGS"
+  mvn -e ${maven_env_args} $BUILDER_ARGS
+
+  ERR=$?
+  if [ $ERR -ne 0 ]; then
+	echo "Aborting due to error code $ERR from Binary build"
+	exit $ERR
+  fi
+  #Copy retrieved artifacts (if any!) from the local M2 cache to the $DEPLOY_DIR directory for later deployment
+
+  echo "Copying all JAR artifacts from $LOCAL_SOURCE_DIR/$1 directory into $DEPLOY_DIR for later deployment..."
+  ARTIFACT_PATH=`echo $APP_GROUPID | sed -e 's|\.|/|g'`
+  
+  cp -v ${maven_env_args}/$ARTIFACT_PATH/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION.jar ${DEPLOYMENTS_DIR}/ 
+  
+elif [ -f "${S2I_SOURCE_DIR}/pom.xml" ]; then
   echo "S2I source build for Maven detected"
   build_dir=$(get_output_dir)
   check_error "Cannot get output dir: $build_dir" $?
