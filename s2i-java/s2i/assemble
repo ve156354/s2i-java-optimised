@@ -179,11 +179,17 @@ if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION
   fi
   #Copy retrieved artifacts (if any!) from the local M2 cache to the $DEPLOY_DIR directory for later deployment
 
-  echo "Copying all JAR artifacts...from: ${maven_env_args}/$ARTIFACT_PATH/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION.jar to:  ${DEPLOYMENTS_DIR}/ ... "
+  echo "Copying all JAR artifacts...from: ${S2I_ARTIFACTS_DIR}/m2/$ARTIFACT_PATH/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION.jar to:  ${DEPLOYMENTS_DIR}/ ... "
   ARTIFACT_PATH=`echo $APP_GROUPID | sed -e 's|\.|/|g'`
   
+  echo "ARTIFACT_PATH=${ARTIFACT_PATH}"
+  
   #copy the artifact to deployment dir...
-  cp -v ${maven_env_args}/$ARTIFACT_PATH/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION.jar ${DEPLOYMENTS_DIR}/ 
+  cp -v ${S2I_ARTIFACTS_DIR}/m2/$ARTIFACT_PATH/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION.jar ${DEPLOYMENTS_DIR}/ 
+  
+  #Remove artifacts...
+  rm -rf "${S2I_ARTIFACTS_DIR}/m2"
+  check_error "Cannot remove local Maven repository ${S2I_ARTIFACTS_DIR}/m2" $?
   
 elif [ -f "${S2I_SOURCE_DIR}/pom.xml" ]; then
   echo "S2I source build for Maven detected"
