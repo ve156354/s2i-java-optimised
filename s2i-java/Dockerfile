@@ -68,7 +68,8 @@ RUN mkdir -p /deployments/data && \
  chmod -R "g+rwX" /deployments && \
  chown -R java:root /deployments
  
-COPY settings.xml /opt/java/.m2/settings.xml
+#COPY settings.xml /opt/java/.m2/settings.xml
+COPY settings.xml /opt/apache-maven-${MAVEN_VERSION}/configuration/settings.xml
 
 # S2I requires a numeric, non-0 UID. This is the UID for the java user in the base image
 USER 185

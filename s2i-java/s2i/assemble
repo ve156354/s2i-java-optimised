@@ -6,7 +6,7 @@ source `dirname "$0"`/s2i-setup
 maven_env_args="-Dmaven.repo.local=${S2I_ARTIFACTS_DIR}/m2"
 
 #Nexus url
-nexus_url="http://artmgt01.atpco.org:8081/repository/maven-releases"
+#nexus_url="http://artmgt01.atpco.org:8081/repository/maven-releases"
 # =========================================================================
 # Helper functions:
 
@@ -81,8 +81,8 @@ function setup_maven() {
     maven_env_args="${maven_env_args} -s ${S2I_SOURCE_DIR}/configuration/settings.xml"
     echo "Using custom maven settings from ${S2I_SOURCE_DIR}/configuration/settings.xml"
   else
-    #local settings="${S2I_ARTIFACTS_DIR}/configuration/settings.xml"
-	local settings="/opt/java/.m2/settings.xml"
+    local settings="/opt/apache-maven-${MAVEN_VERSION}/configuration/settings.xml"
+	#local settings="/opt/java/.m2/settings.xml"
     mkdir -p $(dirname "${settings}")
     maven_env_args="${maven_env_args} -s ${settings}"
     echo "Initialising default settings ${settings}"
@@ -166,10 +166,14 @@ if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION
   
   #pushd $WORKING_DIR &> /dev/null
   
+  if [ -z "${NEXUS_URL}" ];then
+     echo "Aborting the binary build...NEXUS_URL is not set"
+  fi
+   
   
-  BUILDER_ARGS="org.apache.maven.plugins:maven-dependency-plugin:2.1:get ${maven_env_args} -DrepoUrl=${nexus_url} -Dartifact=$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION:jar "
+  BUILDER_ARGS="org.apache.maven.plugins:maven-dependency-plugin:2.1:get ${maven_env_args} -DrepoUrl=${NEXUS_URL} -Dartifact=$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION:jar "
   #Execute the actual build
-  echo "Running - mvn ${maven_env_args} $BUILDER_ARGS"
+  echo "Running - mvn $BUILDER_ARGS"
   mvn -e ${maven_env_args} $BUILDER_ARGS
 
   ERR=$?
