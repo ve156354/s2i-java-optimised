@@ -168,6 +168,7 @@ if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION
   
   if [ -z "${NEXUS_URL}" ];then
      echo "Aborting the binary build...NEXUS_URL is not set"
+	 exit
   fi
    
   
