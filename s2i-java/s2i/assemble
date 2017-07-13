@@ -166,9 +166,8 @@ if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION
   
   #pushd $WORKING_DIR &> /dev/null
   
-  if [ -z "${NEXUS_URL}" ];then
-     echo "Aborting the binary build...NEXUS_URL is not set"
-	 exit
+  if [ -z "${NEXUS_URL}" ];then    
+	 check_error "Aborting the binary build...NEXUS_URL is not set..." 1
   fi
    
   
