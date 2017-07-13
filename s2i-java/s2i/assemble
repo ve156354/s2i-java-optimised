@@ -177,7 +177,7 @@ if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION
   fi
   #Copy retrieved artifacts (if any!) from the local M2 cache to the $DEPLOY_DIR directory for later deployment
 
-  echo "Copying all JAR artifacts from $LOCAL_SOURCE_DIR/$1 directory into $DEPLOY_DIR for later deployment..."
+  echo "Copying all JAR artifacts...from: ${maven_env_args}/$ARTIFACT_PATH/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION.jar to:  ${DEPLOYMENTS_DIR}/ ... "
   ARTIFACT_PATH=`echo $APP_GROUPID | sed -e 's|\.|/|g'`
   
   #copy the artifact to deployment dir...
