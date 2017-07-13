@@ -158,14 +158,14 @@ if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION
   
   echo "Performing Binary build with maven artifact from NEXUS ....$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION"
   
-  WORKING_DIR=/tmp/src
-  M2_REPO=${WORKING_DIR}/repo
-  mkdir -p $M2_REPO
+  #WORKING_DIR=/tmp/src
+  #M2_REPO=${WORKING_DIR}/repo
+  #mkdir -p $M2_REPO
   
-  pushd $WORKING_DIR &> /dev/null
+  #pushd $WORKING_DIR &> /dev/null
   
   
-  BUILDER_ARGS="org.apache.maven.plugins:maven-dependency-plugin:2.1:get -Dmaven.repo.local=$M2_REPO -DrepoUrl=http://artmgt01.atpco.org:8081/repository/maven-releases -Dartifact=$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION:jar "
+  BUILDER_ARGS="org.apache.maven.plugins:maven-dependency-plugin:2.1:get ${maven_env_args} -DrepoUrl=http://artmgt01.atpco.org:8081/repository/maven-releases -Dartifact=$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION:jar "
   #Execute the actual build
   echo "Running - mvn ${maven_env_args} $BUILDER_ARGS"
   mvn -e ${maven_env_args} $BUILDER_ARGS
@@ -181,7 +181,7 @@ if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION
   ARTIFACT_PATH=`echo $APP_GROUPID | sed -e 's|\.|/|g'`
   
   #copy the artifact to deployment dir...
-  cp -v $M2_REPO/$ARTIFACT_PATH/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION.jar ${DEPLOYMENTS_DIR}/ 
+  cp -v ${maven_env_args}/$ARTIFACT_PATH/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION.jar ${DEPLOYMENTS_DIR}/ 
   
 elif [ -f "${S2I_SOURCE_DIR}/pom.xml" ]; then
   echo "S2I source build for Maven detected"
