@@ -156,19 +156,14 @@ echo "=================================================================="
 echo "Starting S2I Java Build ....."
 
 
-if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION" ] ; then
+if [ ! -z "$APP_GROUPID" ] && [ ! -z "$APP_ARTIFACTID" ] && [ ! -z "$APP_VERSION" ] && [ ! -z "$NEXUS_URL" ]; then
   
   echo "Performing Binary build with maven artifact from NEXUS ....$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION"
+
   
-  #WORKING_DIR=/tmp/src
-  #M2_REPO=${WORKING_DIR}/repo
-  #mkdir -p $M2_REPO
-  
-  #pushd $WORKING_DIR &> /dev/null
-  
-  if [ -z "${NEXUS_URL}" ];then    
-	 check_error "Aborting the binary build...NEXUS_URL is not set..." 1
-  fi
+  #if [ -z "${NEXUS_URL}" ];then    
+	 #check_error "Aborting the binary build...NEXUS_URL is not set..." 1
+  #fi
    
   
   BUILDER_ARGS="org.apache.maven.plugins:maven-dependency-plugin:2.1:get ${maven_env_args} -DrepoUrl=${NEXUS_URL} -Dartifact=$APP_GROUPID:$APP_ARTIFACTID:$APP_VERSION:jar "
@@ -218,7 +213,7 @@ elif [ -f "${S2I_SOURCE_DIR}/Dockerfile" ]; then
   echo "Copying binaries from ${binary_dir} to ${DEPLOYMENTS_DIR} ..."
   copy_dir ${binary_dir} ${DEPLOYMENTS_DIR}
   check_error "copying ${binary_dir} to ${DEPLOYMENTS_DIR}" $?
-else
+elif
   echo "S2I source build with plain binaries detected"
   if [ -d "${S2I_SOURCE_DIR}/deployments" ]; then
     default_binary_dir="${S2I_SOURCE_DIR}/deployments"
@@ -230,6 +225,8 @@ else
   echo "Copying binaries from ${binary_dir} to ${DEPLOYMENTS_DIR} ..."
   copy_dir ${binary_dir} ${DEPLOYMENTS_DIR}
   check_error "copying ${binary_dir} to ${DEPLOYMENTS_DIR}" $?
+else
+  check_error "Invalid build options..Aborting.." 1
 fi
 
 echo "... done"
