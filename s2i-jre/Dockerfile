@@ -39,6 +39,7 @@ RUN yum repolist > /dev/null && \
 	      -O /tmp/jre-8u144-linux-x64.rpm  && \
     yum -y --setopt=tsflags=nodocs install /tmp/jre-8u144-linux-x64.rpm  && \
     yum clean all  && \
+	rm -rf /var/cache/yum && \
     rm  /tmp/jre-8u144-linux-x64.rpm && \		
 	
     # Add Java User
