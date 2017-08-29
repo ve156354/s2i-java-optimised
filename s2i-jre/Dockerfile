@@ -1,4 +1,4 @@
-FROM rhel:7.4
+FROM rhel:7.3
 
 MAINTAINER Veerendra K Akula <vakula@atpco.net>
 
