@@ -44,7 +44,7 @@ RUN yum repolist > /dev/null && \
     # Add Java User
     groupadd -r java -g 1000 && \
     useradd -u 185 -r -g root -m -d /opt/java -s /sbin/nologin -c "Java user" java && \
-    usermod -a -G java java && \
+    usermod -a -G java java 
     
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
