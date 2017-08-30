@@ -31,7 +31,7 @@ RUN yum repolist > /dev/null && \
     rsync" && \   
     yum install -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
-    yum clean all && \
+    yum --enablerepo=\* clean all && \
 			
     # Install Java
     wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm" \
@@ -48,7 +48,7 @@ RUN yum repolist > /dev/null && \
     #Timezone fix -- RHEL default is UTC.
     rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
-# RUN  rm -rf /var/cache/yum 
+RUN  rm -rf /var/cache/yum 
 	
 COPY run-java.sh run-env.sh debug-options container-limits java-default-options /opt/run-java/
 RUN chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/java-default-options /opt/run-java/container-limits /opt/run-java/debug-options
