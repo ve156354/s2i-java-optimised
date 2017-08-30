@@ -2,8 +2,7 @@ FROM rhel:7.3
 
 MAINTAINER Veerendra K Akula <vakula@atpco.net>
 
-ENV MAVEN_VERSION="3.3.3" \    
-    JAVA_HOME="/usr/java/jdk1.8.0_144" \
+ENV JAVA_HOME="/usr/java/jdk1.8.0_144" \
     JAVA_VENDOR="oracle" \
     JAVA_VERSION="1.8.0" \
     PATH=$PATH:"/usr/local/s2i" \   

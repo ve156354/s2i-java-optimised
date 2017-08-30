@@ -2,6 +2,24 @@
 # Global S2I variable setup
 source `dirname "$0"`/s2i-setup
 
+function check_error() {
+  local label=$1
+  local error=$2
+  if [ ${error} -ne 0 ]; then
+    echo "Aborting due to error code $error for $label"
+    exit ${error}
+  fi
+}
+
+
+function copy_dir() {
+  local src=$1
+  local dest=$2
+
+  # Copy recursively and preserve ownership: -a
+  cp -a ${src}/* ${dest}
+}
+
 # =========================================================================
 # Main
 
