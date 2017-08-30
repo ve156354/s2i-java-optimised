@@ -38,17 +38,17 @@ RUN yum repolist > /dev/null && \
 	      -O /tmp/jre-8u144-linux-x64.rpm  && \
     yum -y --setopt=tsflags=nodocs install /tmp/jre-8u144-linux-x64.rpm  && \
     yum clean all  && \
-	rm -rf /var/cache/yum && \
     rm  /tmp/jre-8u144-linux-x64.rpm && \		
 	
     # Add Java User
     groupadd -r java -g 1000 && \
     useradd -u 185 -r -g root -m -d /opt/java -s /sbin/nologin -c "Java user" java && \
-    usermod -a -G java java 
+    usermod -a -G java java && \
     
-RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
+    #Timezone fix -- RHEL default is UTC.
+    rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
-#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN  rm -rf /var/cache/yum 
 	
 COPY run-java.sh run-env.sh debug-options container-limits java-default-options /opt/run-java/
 RUN chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/java-default-options /opt/run-java/container-limits /opt/run-java/debug-options
