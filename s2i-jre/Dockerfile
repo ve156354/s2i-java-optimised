@@ -48,7 +48,7 @@ RUN yum repolist > /dev/null && \
     #Timezone fix -- RHEL default is UTC.
     rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
-RUN  rm -rf /var/cache/yum 
+# RUN  rm -rf /var/cache/yum 
 	
 COPY run-java.sh run-env.sh debug-options container-limits java-default-options /opt/run-java/
 RUN chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/java-default-options /opt/run-java/container-limits /opt/run-java/debug-options
