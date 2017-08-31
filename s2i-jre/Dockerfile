@@ -21,29 +21,16 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 
 # Need to install Yum Base Packages, and JRE
-
-#RUN microdnf --enablerepo=rhel-7-server-optional-rpms && \
-#RUN INSTALL_PKGS="tar \
-#    unzip \
-#    wget \
-#    which \
-#    rsync" && \   
-#    microdnf --nodocs --enablerepo=rhel-7-server-rpms install $INSTALL_PKGS && \
-#    #rpm -V $INSTALL_PKGS  \
-#    microdnf clean all && \ 
-			
-    # Install Java
-RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which unzip tar &&\
-	
+RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which unzip tar &&\	
+	microdnf clean all  && \
 	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
-	http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm \
-	      -O /tmp/jre-8u144-linux-x64.rpm  && \
+	http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm  -O /tmp/jre-8u144-linux-x64.rpm && \
     rpm -ivh /tmp/jre-8u144-linux-x64.rpm --nodocs  && \
-    microdnf clean all  && \
-    rm  /tmp/jre-8u144-linux-x64.rpm		
+    #microdnf clean all  && \
+    rm  /tmp/jre-8u144-linux-x64.rpm && \		
 	
     # Add Java User
-RUN groupadd -r java -g 1000 && \
+    groupadd -r java -g 1000 && \
     useradd -u 185 -r -g root -m -d /opt/java -s /sbin/nologin -c "Java user" java && \
     usermod -a -G java java && \
     
