@@ -21,15 +21,15 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 
 # Need to install Yum Base Packages, and JRE
-RUN microdnf --enablerepo=rhel-7-server-optional-rpms && \
-    clean all && \
+RUN microdnf --enablerepo=rhel-7-server-optional-rpms \
+    clean all \
     INSTALL_PKGS="tar \
     unzip \
     wget \
     which \
-    rsync" && \   
-    install $INSTALL_PKGS --setopt=tsflags=nodocs && \
-    rpm -V $INSTALL_PKGS && \
+    rsync" \   
+    install $INSTALL_PKGS --setopt=tsflags=nodocs  \
+    rpm -V $INSTALL_PKGS  \
     #microdnf --enablerepo=\* clean all && \
 			
     # Install Java
