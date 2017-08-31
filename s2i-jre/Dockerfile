@@ -29,7 +29,7 @@ RUN microdnf --enablerepo=rhel-7-server-optional-rpms \
     which \
     rsync" \   
     install $INSTALL_PKGS --setopt=tsflags=nodocs  \
-    rpm -V $INSTALL_PKGS  \
+    #rpm -V $INSTALL_PKGS  \
     #microdnf --enablerepo=\* clean all && \
 			
     # Install Java
