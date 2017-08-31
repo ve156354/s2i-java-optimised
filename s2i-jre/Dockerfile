@@ -21,7 +21,7 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 
 # Need to install Yum Base Packages, and JRE
-RUN microdnf --enable rhel-7-server-optional-rpms && \
+RUN microdnf --enablerepo=rhel-7-server-optional-rpms && \
     microdnf clean all && \
     INSTALL_PKGS="tar \
     unzip \
