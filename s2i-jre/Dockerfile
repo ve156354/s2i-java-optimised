@@ -28,7 +28,7 @@ RUN microdnf --enablerepo=rhel-7-server-optional-rpms && \
     wget \
     which \
     rsync" && \   
-    microdnf install -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
+    microdnf install install $INSTALL_PKGS --setopt=tsflags=nodocs && \
     rpm -V $INSTALL_PKGS && \
     microdnf --enablerepo=\* clean all && \
 			
