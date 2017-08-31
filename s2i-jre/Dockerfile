@@ -33,19 +33,18 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
     microdnf clean all && \ 
 			
     # Install Java
-    
-	
-	#wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "
-	#http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm" \
-	#      -O /tmp/jre-8u144-linux-x64.rpm  && \
-    #microdnf install /tmp/jre-8u144-linux-x64.rpm --nodocs  && \
-    #microdnf clean all  && \
-    #rm  /tmp/jre-8u144-linux-x64.rpm && \		
+    	
+	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "
+	http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm" \
+	      -O /tmp/jre-8u144-linux-x64.rpm  && \
+    microdnf install /tmp/jre-8u144-linux-x64.rpm --nodocs  && \
+    microdnf clean all  && \
+    rm  /tmp/jre-8u144-linux-x64.rpm && \		
 	
     # Add Java User
-    #groupadd -r java -g 1000 && \
-    #useradd -u 185 -r -g root -m -d /opt/java -s /sbin/nologin -c "Java user" java && \
-    #usermod -a -G java java && \
+    groupadd -r java -g 1000 && \
+    useradd -u 185 -r -g root -m -d /opt/java -s /sbin/nologin -c "Java user" java && \
+    usermod -a -G java java && \
     
     #Timezone fix -- RHEL default is UTC.
     rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
