@@ -35,8 +35,8 @@ RUN microdnf --enablerepo=rhel-7-server-optional-rpms && \
     # Install Java
     wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm" \
 	      -O /tmp/jre-8u144-linux-x64.rpm  && \
-    microdnf -y --setopt=tsflags=nodocs install /tmp/jre-8u144-linux-x64.rpm  && \
-    microdnf --enablerepo=\* clean all  && \
+    microdnf -y --setopt=tsflags=nodocs install /tmp/jre-8u144-linux-x64.rpm --nodocs  && \
+    microdnf  clean all  && \
     rm  /tmp/jre-8u144-linux-x64.rpm && \		
 	
     # Add Java User
