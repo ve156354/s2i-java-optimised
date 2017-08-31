@@ -40,4 +40,4 @@ echo "=================================================================="
   check_error "copying ${binary_dir} to ${DEPLOYMENTS_DIR}" $?
 
 
-echo "... done"
+echo "done copying"
