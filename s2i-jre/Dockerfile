@@ -33,17 +33,17 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 #    microdnf clean all && \ 
 			
     # Install Java
-RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget &&\
+RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which unzip tar &&\
 	
 	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
 	http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm \
 	      -O /tmp/jre-8u144-linux-x64.rpm  && \
     rpm -ivh /tmp/jre-8u144-linux-x64.rpm --nodocs  && \
     microdnf clean all  && \
-    rm  /tmp/jre-8u144-linux-x64.rpm && \		
+    rm  /tmp/jre-8u144-linux-x64.rpm		
 	
     # Add Java User
-    groupadd -r java -g 1000 && \
+RUN groupadd -r java -g 1000 && \
     useradd -u 185 -r -g root -m -d /opt/java -s /sbin/nologin -c "Java user" java && \
     usermod -a -G java java && \
     
