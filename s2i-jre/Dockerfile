@@ -21,7 +21,6 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 
 # Need to install Yum Base Packages, and JRE
-COPY repos/* /etc/yum.repos.d/
 
 #RUN microdnf --enablerepo=rhel-7-server-optional-rpms && \
  RUN INSTALL_PKGS="tar \
@@ -29,7 +28,7 @@ COPY repos/* /etc/yum.repos.d/
     wget \
     which \
     rsync" && \   
-    microdnf --nodocs --enablerepo=rhel-7-server-optional-rpms install $INSTALL_PKGS && \
+    microdnf --nodocs --enablerepo=rhel-7-server-rpms install $INSTALL_PKGS && \
     #rpm -V $INSTALL_PKGS  \
     microdnf clean all && \ 
 			
