@@ -21,11 +21,11 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 
 # Need to install Yum Base Packages, and JRE
-RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which unzip tar &&\	
+RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which unzip tar ; \	
 	microdnf clean all  && \
 	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
 	http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm  -O /tmp/jre-8u144-linux-x64.rpm && \
-    rpm -ivh /tmp/jre-8u144-linux-x64.rpm --nodocs  && \
+    rpm -ivh /tmp/jre-8u144-linux-x64.rpm --nodocs && \
     #microdnf clean all  && \
     rm  /tmp/jre-8u144-linux-x64.rpm && \		
 	
