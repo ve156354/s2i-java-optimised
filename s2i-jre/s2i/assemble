@@ -35,7 +35,9 @@ echo "=================================================================="
   # Assuming that the source already contains compiled artefacts
   echo "Copying binaries from ${binary_dir} to ${DEPLOYMENTS_DIR}..."
   copy_dir ${binary_dir} ${DEPLOYMENTS_DIR}
+  check_error "copying ${binary_dir} to ${DEPLOYMENTS_DIR}" $?
+
   echo "Deleting binary from ${binary_dir}"
   rm -rf ${binary_dir}
-  check_error "copying ${binary_dir} to ${DEPLOYMENTS_DIR}" $?
+  
   echo "done copying.."
