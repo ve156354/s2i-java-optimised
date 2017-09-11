@@ -18,6 +18,8 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 ENV JAVA_HOME="/usr/java/jdk1.8.0_131"
 
+RUN apk --update add bash
+
 RUN apk --no-cache add --virtual=build-dependencies wget rsync which tar unzip ca-certificates \
 
  && wget http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_URL_HASH}/jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz \
