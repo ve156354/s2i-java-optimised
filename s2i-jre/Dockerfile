@@ -2,7 +2,7 @@ FROM  registry.access.redhat.com/rhel7-atomic:7.4-54
 
 MAINTAINER Veerendra K Akula <vakula@atpco.net>
 
-ENV JAVA_HOME="/usr/java/jdk1.8.0_144" \
+ENV JAVA_HOME="/usr/java/jdk1.8.0_131" \
     JAVA_VENDOR="oracle" \
     JAVA_VERSION="1.8.0" \
     PATH=$PATH:"/usr/local/s2i" \   
@@ -22,16 +22,17 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 # install Base Packages and JRE
 
-RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget which tar unzip && microdnf clean all  && \
+RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which tar unzip && microdnf clean all  && \
 	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
-	http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm  -O /tmp/jre-8u144-linux-x64.rpm && \
-	rpm -ivh /tmp/jre-8u144-linux-x64.rpm --nodocs && \   
-    rm  /tmp/jre-8u144-linux-x64.rpm && \		
+	#http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm  -O /tmp/jre-8u144-linux-x64.rpm && \
+	http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jre-8u131-linux-x64.rpm  -O /tmp/jre-8u131-linux-x64.rpm && \
+	rpm -ivh /tmp/jre-8u131-linux-x64.rpm --nodocs && \   
+    rm  /tmp/jre-8u131-linux-x64.rpm && \		
 	
     # Add Java User
-    #groupadd -r java -g 1000 && \
-    #useradd -u 185 -r -g root -m -d /opt/java -s /sbin/nologin -c "Java user" java && \
-    #usermod -a -G java java && \
+    groupadd -r java -g 1000 && \
+    useradd -u 185 -r -g root -m -d /opt/java -s /sbin/nologin -c "Java user" java && \
+    usermod -a -G java java && \
     
     #Timezone fix -- RHEL default is UTC.
     rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
@@ -42,8 +43,6 @@ RUN  chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/
 # Expose Ports
 EXPOSE 8080
 
-
-
 # S2I scripts + README
 COPY s2i /usr/local/s2i
 RUN chmod 755 /usr/local/s2i/*
@@ -51,10 +50,9 @@ ADD README.md /usr/local/s2i/usage.txt
 
 RUN mkdir -p /deployments/data && \
  chmod -R "g+rwX" /deployments && \
- chown -R 185:root /deployments
+ chown -R java:root /deployments
 
 # S2I requires a numeric, non-0 UID. This is the UID for the java user in the base image
-
 USER 185
 
 WORKDIR /opt/java
