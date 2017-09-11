@@ -1,4 +1,4 @@
-FROM rhel:7.4
+FROM  registry.access.redhat.com/rhel7-atomic:7.4-54
 
 MAINTAINER Veerendra K Akula <vakula@atpco.net>
 
@@ -10,7 +10,7 @@ ENV JAVA_HOME="/usr/java/jdk1.8.0_144" \
 	
 ENV TZ=America/New_York
 
-# Some version information
+# version information
 LABEL io.k8s.description="Platform for running plain Java applications" \
       io.k8s.display-name="Java Applications" \
       io.openshift.tags="builder,java" \
@@ -20,24 +20,12 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
       org.jboss.deployments-dir="/deployments"
 
 
-# Need to install Yum Base Packages, and JRE
-RUN yum repolist > /dev/null && \
-    yum-config-manager --enable rhel-7-server-optional-rpms && \
-    yum clean all && \
-    INSTALL_PKGS="tar \
-    unzip \
-    wget \
-    which \
-    rsync" && \   
-    yum install -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
-    rpm -V $INSTALL_PKGS && \
-    yum --enablerepo=\* clean all && \
-			
-    # Install Java
-    wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm" \
-	      -O /tmp/jre-8u144-linux-x64.rpm  && \
-    yum -y --setopt=tsflags=nodocs install /tmp/jre-8u144-linux-x64.rpm  && \
-    yum --enablerepo=\* clean all  && \
+# install Base Packages and JRE
+
+RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which tar unzip && microdnf clean all  && \
+	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
+	http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm  -O /tmp/jre-8u144-linux-x64.rpm && \
+	rpm -ivh /tmp/jre-8u144-linux-x64.rpm --nodocs && \   
     rm  /tmp/jre-8u144-linux-x64.rpm && \		
 	
     # Add Java User
@@ -48,10 +36,8 @@ RUN yum repolist > /dev/null && \
     #Timezone fix -- RHEL default is UTC.
     rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
-RUN  rm -rf /var/cache/yum 
-	
 COPY run-java.sh run-env.sh debug-options container-limits java-default-options /opt/run-java/
-RUN chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/java-default-options /opt/run-java/container-limits /opt/run-java/debug-options
+RUN  chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/java-default-options /opt/run-java/container-limits /opt/run-java/debug-options
 
 # Expose Ports
 EXPOSE 8080
