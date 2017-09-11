@@ -27,7 +27,7 @@ RUN apk --no-cache add --virtual=build-dependencies wget rsync which tar unzip c
 
  && echo "${JAVA_SHA256_CHECKSUM}  /tmp/jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" | sha256sum -c - \
 
- && mkdir /usr/java/jdk1.8.0_131 \
+ && mkdir -p /usr/java/jdk1.8.0_131 \
 
  && tar -xzf /tmp/jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz \
         -C /usr/java/jdk1.8.0_131 && \
