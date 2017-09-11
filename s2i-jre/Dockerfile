@@ -42,7 +42,7 @@ RUN  chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/
 # Expose Ports
 EXPOSE 8080
 
-USER 185
+
 
 # S2I scripts + README
 COPY s2i /usr/local/s2i
@@ -55,6 +55,7 @@ RUN mkdir -p /deployments/data && \
 
 # S2I requires a numeric, non-0 UID. This is the UID for the java user in the base image
 
+USER 185
 
 WORKDIR /opt/java
 
