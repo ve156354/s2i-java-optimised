@@ -32,6 +32,7 @@ RUN apk --no-cache add --virtual=build-dependencies wget rsync which tar unzip c
  && tar -xzf /tmp/jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz \
         -C /usr/java/jdk1.8.0_131 && \
 		
+	rm /tmp/jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz && \		
 	mkdir -p /opt/java && \
     addgroup  java -g 1000 && \
 	adduser -u 185  -D -S -G  root  java java -h /opt/java && \
