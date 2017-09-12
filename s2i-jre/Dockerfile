@@ -1,4 +1,4 @@
-FROM FROM alpine:3.6
+FROM  frolvlad/alpine-glibc:alpine-3.6
 
 ENV JAVA_VERSION=8 \
     JAVA_UPDATE=131 \
@@ -14,9 +14,15 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
       io.openshift.s2i.destination="/tmp" \
       io.openshift.expose-services="8080" \
       org.jboss.deployments-dir="/deployments"
-	  
 
-ENV JAVA_HOME="/usr/java/jdk1.8.0_131"
+
+ENV PATH $PATH:/usr/java/jdk1.8.0_131/jre1.8.0_131/bin
+
+ENV JAVA_HOME="/usr/java/jdk1.8.0_131/jre1.8.0_131"
+
+
+
+
 
 RUN apk --update add bash
 
@@ -33,14 +39,17 @@ RUN apk --no-cache add --virtual=build-dependencies wget rsync which tar unzip c
 
  && tar -xzf /tmp/jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz \
         -C /usr/java/jdk1.8.0_131 && \
-		
-	rm /tmp/jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz && \		
-	mkdir -p /opt/java && \
+    ln -s "/usr/java/jdk1.8.0_131/jre1.8.0_131" "$JAVA_HOME" && \
+    ln -s "$JAVA_HOME/bin/"* "/usr/bin/" && \
+
+        rm /tmp/jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz && \
+        mkdir -p /opt/java && \
     addgroup  java -g 1000 && \
-	adduser -u 185  -D -S -G  root  java java -h /opt/java && \
-	
+        adduser -u 185  -D -S -G  root  java java -h /opt/java && \
+
     #Timezone fix -- RHEL default is UTC.
     rm -f /etc/localtime && ln -s /usr/share/zoneinfo/$TZ /etc/localtime
+
 
 COPY run-java.sh run-env.sh debug-options container-limits java-default-options /opt/run-java/
 RUN  chmod 755 /opt/run-java/run-java.sh /opt/run-java/run-env.sh /opt/run-java/java-default-options /opt/run-java/container-limits /opt/run-java/debug-options
