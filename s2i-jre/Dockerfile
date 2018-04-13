@@ -1,8 +1,8 @@
-FROM  registry.access.redhat.com/rhel7-atomic:7.4-54
+FROM registry.access.redhat.com/rhel-atomic:7.5-217
 
 MAINTAINER Veerendra K Akula <vakula@atpco.net>
 
-ENV JAVA_HOME="/usr/java/jdk1.8.0_131" \
+ENV JAVA_HOME="/usr/java/jdk1.8.0_161" \
     JAVA_VENDOR="oracle" \
     JAVA_VERSION="1.8.0" \
     PATH=$PATH:"/usr/local/s2i" \   
@@ -25,9 +25,9 @@ RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which t
 
 # download oracle JRE
 	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
-	http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jre-8u131-linux-x64.rpm  -O /tmp/jre-8u131-linux-x64.rpm && \
-	rpm -ivh /tmp/jre-8u131-linux-x64.rpm --nodocs && \   
-    rm  /tmp/jre-8u131-linux-x64.rpm && \		
+	http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jre-8u161-linux-x64.rpm  -O /tmp/jre-8u161-linux-x64.rpm && \
+	rpm -ivh /tmp/jre-8u161-linux-x64.rpm --nodocs && \   
+        rm  /tmp/jre-8u161-linux-x64.rpm && \		
 	
     # Add Java User
     groupadd -r java -g 1000 && \
