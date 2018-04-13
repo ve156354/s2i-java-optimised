@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel-atomic:7.5-217
+FROM registry.access.redhat.com/rhel7-atomic:7.4-54
 
 MAINTAINER Veerendra K Akula <vakula@atpco.net>
 
@@ -21,7 +21,7 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 
 # install Base Packages and JRE
-RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget which tar unzip && microdnf clean all  && \
+RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which tar unzip && microdnf clean all  && \
 
 # download oracle JRE
 	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
