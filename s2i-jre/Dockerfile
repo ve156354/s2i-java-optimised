@@ -21,7 +21,7 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 
 # install Base Packages and JRE
-RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which tar unzip && microdnf clean all  && \
+RUN  microdnf update microdnf  && microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which tar unzip && microdnf clean all  && \
 
 # download oracle JRE
 	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
