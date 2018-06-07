@@ -2,9 +2,9 @@ FROM  registry.access.redhat.com/rhel7-atomic:7.4-131
 
 MAINTAINER Veerendra K Akula <vakula@atpco.net>
 
-ENV JAVA_HOME="/usr/java/jdk1.8.0_161" \
+ENV JAVA_HOME="/usr/java/jdk10.0.1" \
     JAVA_VENDOR="oracle" \
-    JAVA_VERSION="1.8.0" \
+    JAVA_VERSION="1.10.1" \
     PATH=$PATH:"/usr/local/s2i" \   
     JAVA_DATA_DIR=/deployments/data
 	
@@ -21,13 +21,13 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 
 
 # install Base Packages and JRE
-RUN   microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which tar unzip && microdnf clean all  && \
+RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which tar unzip && microdnf clean all  && \
 
 # download oracle JRE
-	wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
-	http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jre-8u161-linux-x64.rpm  -O /tmp/jre-8u161-linux-x64.rpm && \
-	rpm -ivh /tmp/jre-8u161-linux-x64.rpm --nodocs && \   
-    rm  /tmp/jre-8u161-linux-x64.rpm && \		
+    wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie"  \
+    http://download.oracle.com/otn-pub/java/jdk/10.0.1+10/fb4372174a714e6b8c52526dc134031e/jre-10.0.1_linux-x64_bin.rpm  -O /tmp/jre-10.0.1_linux-x64_bin.rpm && \
+    rpm -ivh /tmp/jre-10.0.1_linux-x64_bin.rpm --nodocs && \   
+    rm  /tmp/jre-10.0.1_linux-x64_bin.rpm && \			
 	
     # Add Java User
     groupadd -r java -g 1000 && \
