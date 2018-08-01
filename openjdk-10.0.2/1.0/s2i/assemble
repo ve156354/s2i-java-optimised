@@ -1,0 +1,37 @@
+#!/bin/sh
+# Global S2I variable setup
+#source s2i-setup
+S2I_DESTINATION=${S2I_DESTINATION:-/tmp}
+S2I_SOURCE_DIR="${S2I_DESTINATION}/src"
+S2I_ARTIFACTS_DIR="${S2I_DESTINATION}/artifacts"
+DEPLOYMENTS_DIR="/deployments"
+
+function copy_dir(){
+    local src=$1
+    local dest=$2
+
+    cp -a $src/* $dest
+}
+
+function check_error() {
+    local label=$1
+    local error=$2
+    if [ ${error} -ne 0 ]; then
+        echo " aborting due to error while $label "
+        exit ${error}
+    fi
+}
+
+echo "S2I source build with plain binaries detected"
+if [ -d "${S2I_SOURCE_DIR}/deployments" ]; then
+    default_binary_dir="${S2I_SOURCE_DIR}/deployments"
+else
+    default_binary_dir="${S2I_SOURCE_DIR}"
+fi
+binary_dir="${ARTIFACT_DIR:-${default_binary_dir}}"
+# Assuming that the source already contains compiled artefacts
+echo "Copying binaries from ${binary_dir} to ${DEPLOYMENTS_DIR} ..."
+copy_dir ${binary_dir} ${DEPLOYMENTS_DIR}
+check_error "copying ${binary_dir} to ${DEPLOYMENTS_DIR}" $?
+ls -al /deployments
+echo "... done"
