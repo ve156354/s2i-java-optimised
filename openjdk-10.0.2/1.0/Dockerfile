@@ -24,7 +24,7 @@ RUN microdnf install wget rsync --enablerepo=rhel-7-server-rpms --nodocs && \
 
 	wget https://download.java.net/java/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_linux-x64_bin.tar.gz -O /tmp/openjdk-10.0.2_linux-x64_bin.tar.gz && \
 	tar zxf /tmp/openjdk-10.0.2_linux-x64_bin.tar.gz  -C /usr && \ 
-
+    alternatives --install /usr/bin/java java /usr/jdk-10.0.2/bin/java && \
 	
     # create java group and add it to user
     groupadd -r java -g 1000 && \
