@@ -24,7 +24,7 @@ LABEL io.k8s.description="Platform for running plain Java applications" \
 RUN microdnf --nodocs --enablerepo=rhel-7-server-rpms install wget rsync which tar unzip && microdnf clean all  && \
 
 # Install openJDK
-    microdnf install java-1.8.0-openjdk-devel && \	 	
+    microdnf install java-1.8.0-openjdk && \	 	
 	
     # Add Java User
     groupadd -r java -g 1000 && \
